@@ -16,7 +16,7 @@ CREATE TABLE ciudad (
     nombre VARCHAR(50),
     id_pais SMALLINT,
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_pais REFERENCES pais(id_pais)
+    FOREIGN KEY (id_pais) REFERENCES pais(id_pais)
 );
 
 CREATE TABLE direccion (
@@ -28,7 +28,7 @@ CREATE TABLE direccion (
     codigo_postal VARCHAR(10),
     telefono VARCHAR(20),
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_ciudad REFERENCES ciudad(id_ciudad)
+    FOREIGN KEY (id_ciudad) REFERENCES ciudad(id_ciudad)
 );
 
 CREATE TABLE idioma (
@@ -39,8 +39,7 @@ CREATE TABLE idioma (
 
 CREATE TABLE categoria (
     id_categoria TINYINT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50),
-    
+    nombre VARCHAR(50)
 );
 
 CREATE TABLE pelicula (
@@ -57,8 +56,8 @@ CREATE TABLE pelicula (
     clasificacion ENUM('G','PG','PG-13','R','NC-17'),
     caracteristicas_especiales SET('Trailers','Commentaries','Deleted Scenes','Behind the Scenes'),
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_idioma REFERENCES idioma(id_idioma),
-    FOREIGN KEY id_idioma_original REFERENCES idioma(id_idioma)
+    FOREIGN KEY (id_idioma) REFERENCES idioma(id_idioma),
+    FOREIGN KEY (id_idioma_original) REFERENCES idioma(id_idioma)
 );
 
 CREATE TABLE pelicula_actor (
@@ -66,17 +65,17 @@ CREATE TABLE pelicula_actor (
     id_pelicula SMALLINT,
     ultima_actualizacion TIMESTAMP,
     PRIMARY KEY (id_actor, id_pelicula),
-    FOREIGN KEY id_actor REFERENCES actor(id_actor),
-    FOREIGN KEY id_pelicula REFERENCES pelicula(id_pelicula)
+    FOREIGN KEY (id_actor) REFERENCES actor(id_actor),
+    FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula)
 );
 
 CREATE TABLE pelicula_categoria (
     id_pelicula SMALLINT,
     id_categoria TINYINT,
     ultima_actualizacion TIMESTAMP,
-    PRIMARY KEY (id_actor, id_pelicula),
-    FOREIGN KEY id_categoria REFERENCES categoria(id_categoria),
-    FOREIGN KEY id_pelicula REFERENCES pelicula(id_pelicula)
+    PRIMARY KEY (id_pelicula),
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria),
+    FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula)
 );
 
 CREATE TABLE empleado (
@@ -90,7 +89,7 @@ CREATE TABLE empleado (
     username VARCHAR(16),
     password VARCHAR(40),
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_direccion REFERENCES direccion(id_direccion)
+    FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion)
 );
 
 CREATE TABLE almacen (
@@ -98,8 +97,8 @@ CREATE TABLE almacen (
     id_direccion SMALLINT,
     id_empleado_jefe TINYINT,
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_direccion REFERENCES direccion(id_direccion),
-    FOREIGN KEY id_empleado REFERENCES empleado(id_empleado)
+    FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion),
+    FOREIGN KEY (id_empleado_jefe) REFERENCES empleado(id_empleado)
 );
 
 CREATE TABLE almacen_empleado (
@@ -107,8 +106,8 @@ CREATE TABLE almacen_empleado (
     id_almacen TINYINT,
     ultima_actualizacion TIMESTAMP,
     PRIMARY KEY (id_almacen, id_empleado),
-    FOREIGN KEY id_empleado REFERENCES empleado(id_empleado),
-    FOREIGN KEY id_almacen REFERENCES almacen(id_almacen)
+    FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado),
+    FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 );
 
 CREATE TABLE cliente (
@@ -121,8 +120,8 @@ CREATE TABLE cliente (
     activo TINYINT(1),
     fecha_creacion DATETIME,
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_direccion REFERENCES direccion(id_direccion),
-    FOREIGN KEY id_almacen REFERENCES almacen_empleado(id_almacen)
+    FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion),
+    FOREIGN KEY (id_almacen) REFERENCES almacen_empleado(id_almacen)
 );
 
 CREATE TABLE inventario (
@@ -131,8 +130,8 @@ CREATE TABLE inventario (
     id_almacen TINYINT,
     ultima_actualizacion TIMESTAMP,
     PRIMARY KEY (id_inventario),
-    FOREIGN KEY id_pelicula REFERENCES pelicula(id_pelicula),
-    FOREIGN KEY id_almacen REFERENCES almacen(id_almacen)
+    FOREIGN KEY (id_pelicula) REFERENCES pelicula(id_pelicula),
+    FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 );
 
 CREATE TABLE alquiler (
@@ -142,9 +141,9 @@ CREATE TABLE alquiler (
     fecha_devolucion DATETIME,
     id_empleado TINYINT,
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_inventario REFERENCES inventario(id_inventario),
-    FOREIGN KEY id_cliente REFERENCES cliente(id_cliente),
-    FOREIGN KEY id_empleado REFERENCES empleado(id_empleado)
+    FOREIGN KEY (id_inventario) REFERENCES inventario(id_inventario),
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado)
 );
 
 CREATE TABLE pago (
@@ -155,7 +154,7 @@ CREATE TABLE pago (
     total DECIMAL(5,2),
     fecha_pago DATETIME,
     ultima_actualizacion TIMESTAMP,
-    FOREIGN KEY id_alquiler REFERENCES alquiler(id_alquiler),
-    FOREIGN KEY id_cliente REFERENCES cliente(id_cliente),
-    FOREIGN KEY id_empleado REFERENCES empleado(id_empleado)
+    FOREIGN KEY (id_alquiler) REFERENCES alquiler(id_alquiler),
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
+    FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado)
 );
