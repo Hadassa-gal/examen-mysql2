@@ -117,10 +117,50 @@ CREATE TABLE almacen_empleado (
 );
 
 CREATE TABLE cliente (
-    id_almacen SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    id_cliente SMALLINT PRIMARY KEY AUTO_INCREMENT,
+    id_almacen SMALLINT,
+    nombre VARCHAR(45),
+    apellidos VARCHAR(45),
+    email VARCHAR(50),
     id_direccion SMALLINT,
-    id_empleado_jefe TINYINT,
+    activo TINYINT(1),
+    fecha_creacion DATETIME,
     ultima_actualizacion TIMESTAMP,
     FOREIGN KEY id_direccion REFERENCES direccion(id_direccion),
+    FOREIGN KEY id_almacen REFERENCES almacen_empleado(id_almacen)
+);
+
+CREATE TABLE inventario (
+    id_inventario MEDIUMINT,
+    id_pelicula SMALLINT,
+    id_almacen TINYINT,
+    ultima_actualizacion TIMESTAMP,
+    PRIMARY KEY (id_inventario),
+    FOREIGN KEY id_pelicula REFERENCES pelicula(id_pelicula),
+    FOREIGN KEY id_almacen REFERENCES almacen(id_almacen)
+);
+
+CREATE TABLE alquiler (
+    id_alquiler INT PRIMARY KEY,
+    id_inventario MEDIUMINT,
+    id_cliente SMALLINT,
+    fecha_devolucion DATETIME,
+    id_empleado TINYINT,
+    ultima_actualizacion TIMESTAMP,
+    FOREIGN KEY id_inventario REFERENCES inventario(id_inventario),
+    FOREIGN KEY id_cliente REFERENCES cliente(id_cliente),
+    FOREIGN KEY id_empleado REFERENCES empleado(id_empleado)
+);
+
+CREATE TABLE pago (
+    id_pago INT PRIMARY KEY,
+    id_cliente SMALLINT,
+    id_empleado TINYINT,
+    id_alquiler INT,
+    total DECIMAL(5,2),
+    fecha_pago DATETIME,
+    ultima_actualizacion TIMESTAMP,
+    FOREIGN KEY id_alquiler REFERENCES alquiler(id_alquiler),
+    FOREIGN KEY id_cliente REFERENCES cliente(id_cliente),
     FOREIGN KEY id_empleado REFERENCES empleado(id_empleado)
 );
