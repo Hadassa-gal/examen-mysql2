@@ -42,6 +42,7 @@ CREATE TABLE categoria (
     nombre VARCHAR(50)
 );
 
+ALTER TABLE categoria ADD COLUMN ultima_actualizacion TIMESTAMP;
 CREATE TABLE pelicula (
     id_pelicula SMALLINT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(255),
@@ -110,9 +111,11 @@ CREATE TABLE almacen_empleado (
     FOREIGN KEY (id_almacen) REFERENCES almacen(id_almacen)
 );
 
+ALTER TABLE almacen_empleado DROP COLUMN ultima_actualizacion;
+
 CREATE TABLE cliente (
     id_cliente SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    id_almacen SMALLINT,
+    id_almacen TINYINT,
     nombre VARCHAR(45),
     apellidos VARCHAR(45),
     email VARCHAR(50),
@@ -123,6 +126,11 @@ CREATE TABLE cliente (
     FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion),
     FOREIGN KEY (id_almacen) REFERENCES almacen_empleado(id_almacen)
 );
+
+ALTER TABLE cliente DROP COLUMN fecha_creacion;
+ALTER TABLE cliente ADD COLUMN fecha_creacion TIMESTAMP;
+ALTER TABLE cliente DROP FOREIGN KEY cliente_ibfk_2;
+ALTER TABLE cliente ADD CONSTRAINT cliente_ibfk4 FOREIGN KEY (id_direccion) REFERENCES direccion(id_direccion);
 
 CREATE TABLE inventario (
     id_inventario MEDIUMINT,
@@ -145,6 +153,9 @@ CREATE TABLE alquiler (
     FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente),
     FOREIGN KEY (id_empleado) REFERENCES empleado(id_empleado)
 );
+ALTER TABLE alquiler MODIFY COLUMN id_alquiler INT(7);
+ALTER TABLE alquiler ADD COLUMN fecha_alquiler TIMESTAMP AFTER id_alquiler;
+ALTER TABLE alquiler MODIFY COLUMN fecha_devolucion TIMESTAMP;
 
 CREATE TABLE pago (
     id_pago INT PRIMARY KEY,
