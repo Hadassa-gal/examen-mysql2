@@ -43,11 +43,6 @@ CREATE TABLE categoria (
     
 );
 
-CREATE TABLE film_text (
-    film_id SMALLINT PRIMARY KEY AUTO_INCREMENT,
-    description VARCHAR(50)
-);
-
 CREATE TABLE pelicula (
     id_pelicula SMALLINT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(255),
